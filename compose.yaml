@@ -1,10 +1,8 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  db:
+    image: postgres
+    restart: always
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      POSTGRES_PASSWORD: postgres
     ports:
-      - 5440:5440
-    command: ["postgres", "-c", "port=5440"]
+      - 5433:5432
