@@ -1,0 +1,86 @@
+openapi: 3.0.3
+info:
+  title: Data Service API
+  version: 1.0.0
+  description: >
+    Внутренний API для управления студентами.
+    Этот сервис отвечает за чтение и запись данных в базу данных.
+servers:
+  - url: http://localhost:8083
+    description: Data Service (внутренний)
+
+paths:
+  /students:
+    post:
+      summary: Создать студента в БД
+      description: Создает запись о студенте в базе данных.
+      operationId: createStudentDataInData
+      tags:
+        - StudentData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentDataCreateRequest'
+      responses:
+        '201':
+          description: Студент успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDataResponse'
+
+  /students/{id}:
+    get:
+      summary: Получить данные студента из БД
+      description: Возвращает информацию о студенте по идентификатору.
+      operationId: getStudentDataByIdFromData
+      tags:
+        - StudentData
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Идентификатор студента
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Студент найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentDataResponse'
+        '404':
+          description: Студент не найден
+
+components:
+  schemas:
+    StudentDataCreateRequest:
+      type: object
+      required:
+        - fullName
+        - passport
+      properties:
+        fullName:
+          type: string
+          example: "Иванов Иван Иванович"
+        passport:
+          type: string
+          example: "+7 999 123-45-67"
+
+    StudentDataResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        fullName:
+          type: string
+          example: "Иванов Иван Иванович"
+        passport:
+          type: string
+          example: "+7 999 123-45-67"

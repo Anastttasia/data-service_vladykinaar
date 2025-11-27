@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: GATE Service API
+  version: 1.0.0
+  description: >
+    API шлюза (GATE), принимающего запросы от внешних клиентов
+    и перенаправляющего их во внутренний сервис DATA-SERVICE.
+servers:
+  - url: http://localhost:8080
+    description: GATE Service (внешний)
+
+paths:
+  /api/students:
+    post:
+      summary: Проксировать создание студента во внутренний сервис
+      description: Принимает запрос от клиента и перенаправляет его в DATA SERVICE.
+      operationId: createStudent
+      tags:
+        - studentGate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudentGateCreateRequest'
+      responses:
+        '201':
+          description: Студент создан (ответ от DATA SERVICE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudentGateResponse'
+
+components:
+  schemas:
+    StudentGateCreateRequest:
+      type: object
+      required:
+        - fullName
+        - passport
+      properties:
+        fullName:
+          type: string
+          example: "Иванов Иван Иванович"
+        passport:
+          type: string
+          example: "1234 567890"
+
+    StudentGateResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        fullName:
+          type: string
+          example: "Иванов Иван Иванович"
+        passport:
+          type: string
+          example: "1234 567890"
