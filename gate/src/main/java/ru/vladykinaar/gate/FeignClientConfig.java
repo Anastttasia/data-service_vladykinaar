@@ -9,10 +9,9 @@ import ru.vladykinaar.gate.client.api.StudentDataApi;
 public class FeignClientConfig {
 
     @Bean
-    public StudentDataApi studentDataApi() {
+    public StudentDataApi someStudentApi() {
         ApiClient apiClient = new ApiClient();
-        // адрес сервиса data-service
-        apiClient.setBasePath("http://localhost:8083");
+        apiClient.setBasePath("http://localhost:8083"); // или data.service.url
         return apiClient.buildClient(StudentDataApi.class);
     }
 }
